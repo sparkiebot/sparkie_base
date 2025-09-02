@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>sparkie_base</name>
+  <version>0.0.0</version>
+  <description>Sparkie base launch files and configurations for the complete robot system</description>
+
+  <maintainer email="mattsays@sparkie.com">mattsays</maintainer>
+  <license>MIT</license>
+
+  <url type="repository">https://github.com/sparkiebot/sparkie</url>
+
+  <buildtool_depend>ament_python</buildtool_depend>
+
+  <!-- Dependencies for launch files -->
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>sparkie_description</exec_depend>
+  <exec_depend>sparkie_board_connect</exec_depend>
+  <exec_depend>rviz2</exec_depend>
+
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_pep257</test_depend>
+  <test_depend>python3-pytest</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<robot name="sparkie" xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <!-- Constants -->
+
+    <xacro:property name="base_radius" value="0.150" />
+    <xacro:property name="base_height" value="0.030" />
+
+    <!-- All components positions are refered to the base link center point -->
+
+    <xacro:property name="wheel_radius" value="0.0335" />
+    <xacro:property name="wheel_width" value="0.026" />
+    <xacro:property name="wheel_pos_x" value="0.1091" />
+    <xacro:property name="wheel_pos_y" value="0" />
+    <xacro:property name="wheel_pos_z" value="-0.0025" />
+
+    <xacro:property name="lidar_radius" value="0.0278" />
+    <xacro:property name="lidar_height" value="0.0144" />
+    <xacro:property name="lidar_pos_x" value="0.0" />
+    <xacro:property name="lidar_pos_y" value="0.0" />
+    <xacro:property name="lidar_pos_z" value="0.316" />
+
+    <xacro:property name="us_pos_x" value="0.0" />
+    <xacro:property name="us_pos_y" value="0.129" />
+    <xacro:property name="us_pos_z" value="0.113" />
+    <xacro:property name="us_angle" value="54.5" />
+
+    <xacro:property name="camera_pos_x" value="0.0" />
+    <xacro:property name="camera_pos_y" value="0.09051" />
+    <xacro:property name="camera_pos_z" value="0.240" />
+
+    <xacro:property name="board_pos_x" value="0.0" />
+    <xacro:property name="board_pos_y" value="0.0" />
+    <xacro:property name="board_pos_z" value="0.098" />
+
+    <!-- Links -->
+
+    <link name="base_link">
+        <visual>
+            <geometry>
+                <mesh filename="package://sparkie_description/meshes/main_body.obj" scale="0.001 0.001 0.001" />
+            </geometry>
+            <material name="White">
+                <color rgba="0.91 0.9 0.9 1.0" />
+            </material>
+        </visual>
+
+        <inertial>
+            <mass value="5" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <inertia ixx="0.004" ixy="0.001" ixz="0" iyy="0.006" iyz="0" izz="0.007" />
+        </inertial>
+
+        <collision>
+            <geometry>
+                <cylinder radius="0.03" length="0.06"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="base_footprint"></link>
+
+    <joint name="base_joint" type="fixed">
+        <origin xyz="0.0 0.0 ${+(wheel_pos_z + wheel_radius)}" rpy="0.0 0.0 ${-pi/2}" />
+        <parent link="base_footprint" />
+        <child link="base_link" />
+    </joint>
+
+    <!-- Wheels -->
+
+    <xacro:macro name="wheel" params="prefix x_reflect">
+        <link name="${prefix}_wheel_link">
+            <visual>
+                <origin rpy="${pi/2} 0.0 ${pi/2}" />
+                <geometry>
+                    <cylinder radius="${wheel_radius}" length="${wheel_width}" />
+                </geometry>
+                <material name="Gray">
+                    <color rgba="0.5 0.5 0.5 1.0" />
+                </material>
+            </visual>
+        </link>
+
+        <joint name="${prefix}_wheel_joint" type="fixed">
+            <parent link="base_link" />
+            <child link="${prefix}_wheel_link" />
+            <origin xyz="${x_reflect * (wheel_pos_x)} ${wheel_pos_y} ${wheel_pos_z}" />
+            <axis xyz="1.0 0.0 0.0" />
+        </joint>
+    </xacro:macro>
+
+    <xacro:wheel prefix="left" x_reflect="1.0" />
+    <xacro:wheel prefix="right" x_reflect="-1.0" />
+
+    <!-- Lidar -->
+
+    <link name="lidar_link">
+        <visual>
+            <geometry>
+                <cylinder radius="${lidar_radius}" length="${lidar_height}" />
+            </geometry>
+            <material name="Black">
+                <color rgba="0.0 0.0 0.0 1.0" />
+            </material>
+        </visual>
+    </link>
+
+    <joint name="lidar_joint" type="fixed">
+        <origin xyz="${lidar_pos_x} ${lidar_pos_y} ${lidar_pos_z}" rpy="0.0 0.0 ${-pi/2 - 0.05}" />
+        <parent link="base_link" />
+        <child link="lidar_link" />
+    </joint>
+
+    <!-- Ultrasonic Sensor -->
+
+    <xacro:macro name="us_sensor" params="type angle">
+
+        <link name="us_${type}"></link>
+
+        <joint name="${type}_us_joint" type="fixed">
+            <origin
+                xyz="${us_pos_y * cos(pi/2 + pi*(angle)/180)} ${us_pos_y * sin(pi/2 + pi*(angle)/180)} ${us_pos_z}"
+                rpy="0.0 0.0  ${pi*(90 + angle)/180}" />
+            <parent link="base_link" />
+            <child link="us_${type}" />
+        </joint>
+
+    </xacro:macro>
+
+    <xacro:us_sensor type="left" angle="${us_angle}" />
+    <xacro:us_sensor type="front" angle="0.0" />
+    <xacro:us_sensor type="right" angle="${-us_angle}" />
+
+    <!-- Board -->
+
+    <link name="board_link"></link>
+
+    <joint name="board_joint" type="fixed">
+        <origin xyz="${board_pos_x} ${board_pos_y} ${board_pos_z}" rpy="0.0 0.0 0.0" />
+        <parent link="base_link" />
+        <child link="board_link" />
+    </joint>
+
+    <!-- Camera -->
+
+    <link name="camera_link"></link>
+
+    <joint name="camera_joint" type="fixed">
+        <origin xyz="${camera_pos_x} ${camera_pos_y} ${camera_pos_z}" rpy="0.0 0.0 ${pi/2}" />
+        <parent link="base_link" />
+        <child link="camera_link" />
+    </joint>
+
+</robot>

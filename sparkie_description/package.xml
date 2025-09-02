@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>sparkie_description</name>
+  <version>1.0.0</version>
+  <description>Sparkie Model Description</description>
+  <maintainer email="mattia.sicoli@gmail.com">mattsays</maintainer>
+  <license>MIT</license>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+
+  <exec_depend>xacro</exec_depend>
+
+</package>
