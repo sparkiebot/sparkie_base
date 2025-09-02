@@ -65,8 +65,8 @@ def generate_launch_description():
             'scale_angular.yaw': 1.0,       # Scala per la velocità angolare (max 1.0 rad/s)
             'scale_angular_turbo.yaw': 1.5, # Scala per la velocità angolare turbo (max 1.5 rad/s)
 
-            'enable_button': 6,           # Pulsante LB per abilitare il teleoperazione (deadman switch)
-            'enable_turbo_button': 7 ,     # Pulsante RB per attivare la modalità turbo (velocità più alte)
+            'enable_button': 10,           # Pulsante LB per abilitare il teleoperazione (deadman switch)
+            'enable_turbo_button': 11,     # Pulsante RB per attivare la modalità turbo (velocità più alte)
 
             # È possibile configurare più assi, es. per movimento laterale o altezza se il robot lo supporta
             # 'axis_linear.y': <un altro asse>,
